@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promociones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/publicidad.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-store"></i> Urban Style</h1>
+    <nav>
+        <a th:href="@{/principal}"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a th:href="@{/catalogo}"><i class="fa-solid fa-shirt"></i> Catalogo</a>
+        <a th:href="@{/carrito}"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+        <a th:href="@{/mis-compras}"><i class="fa-solid fa-bag-shopping"></i> Mis compras</a>
+        <a th:href="@{/publicidad}"><i class="fa-solid fa-bullhorn"></i> Promociones</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+        <a th:href="@{/logout}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <span class="hero-badge">Promociones automaticas</span>
+        <h2>Compra mas, paga menos</h2>
+        <p>Los beneficios se aplican automaticamente en el checkout segun el subtotal de productos.</p>
+        <a th:href="@{/catalogo}" class="hero-link">Ver catalogo</a>
+    </section>
+
+    <section class="modulos">
+        <article class="card card-envio">
+            <i class="fa-solid fa-truck icono"></i>
+            <h3>Envio normal gratis</h3>
+            <p>En pedidos desde S/150 el delivery normal queda en S/0.</p>
+            <span class="descuento">Desde S/150</span>
+        </article>
+
+        <article class="card card-express">
+            <i class="fa-solid fa-bolt icono"></i>
+            <h3>Express gratis</h3>
+            <p>En pedidos desde S/300 el envio express tambien queda gratis.</p>
+            <span class="descuento">Desde S/300</span>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-percent icono"></i>
+            <h3>5% de descuento</h3>
+            <p>Se aplica sobre productos desde S/150 hasta S/299.</p>
+            <span class="descuento">Rango 1</span>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-fire icono"></i>
+            <h3>10% de descuento</h3>
+            <p>Se aplica sobre productos desde S/300 hasta S/499.</p>
+            <span class="descuento">Rango 2</span>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-crown icono"></i>
+            <h3>15% de descuento</h3>
+            <p>Se aplica sobre productos desde S/500 hasta S/799.</p>
+            <span class="descuento">Rango 3</span>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-gem icono"></i>
+            <h3>20% de descuento</h3>
+            <p>Se aplica sobre productos desde S/800 en adelante.</p>
+            <span class="descuento">Rango 4</span>
+        </article>
+    </section>
+
+    <section class="acciones-promocion">
+        <a th:href="@{/carrito}">Ir al carrito</a>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Urban Style - Proyecto Academico</p>
+</footer>
+</body>
+</html>

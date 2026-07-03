@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/catalogo.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-store"></i> Urban Style</h1>
+    <nav>
+        <a th:href="@{/principal}"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a th:href="@{/catalogo}"><i class="fa-solid fa-shirt"></i> Catalogo</a>
+        <a th:href="@{/carrito}"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+        <a th:href="@{/mis-compras}"><i class="fa-solid fa-bag-shopping"></i> Mis compras</a>
+        <a th:href="@{/publicidad}"><i class="fa-solid fa-bullhorn"></i> Promociones</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+        <a th:href="@{/perfil}"><i class="fa-solid fa-user"></i> Perfil</a>
+        <a th:href="@{/logout}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="titulo">
+        <h2>Catalogo de ropa</h2>
+        <p>Busca prendas, filtra por categoria y agrega productos al carrito.</p>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" class="mensaje-alerta" th:text="${mensaje}"></p>
+    </section>
+
+    <form th:action="@{/catalogo}" method="get" class="filtros-tienda">
+        <input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre">
+
+        <select name="categoria">
+            <option value="Todas" th:selected="${categoriaSeleccionada == 'Todas'}">Todas las categorias</option>
+            <option th:each="categoria : ${categorias}"
+                    th:value="${categoria.nombre}"
+                    th:text="${categoria.nombre}"
+                    th:selected="${categoria.nombre == categoriaSeleccionada}">
+            </option>
+        </select>
+
+        <button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Buscar
+        </button>
+    </form>
+
+    <section class="productos">
+        <article class="producto" th:each="producto : ${productos}">
+            <div class="producto-imagen" th:text="${producto.imagen}">PR</div>
+            <span class="categoria" th:text="${#strings.isEmpty(producto.categoria) ? 'Sin categoria' : producto.categoria}">Categoria</span>
+            <h3 th:text="${producto.nombre}">Producto</h3>
+            <p th:text="${producto.descripcion}">Descripcion</p>
+            <strong>S/ <span th:text="${#numbers.formatDecimal(producto.precio, 1, 2)}">0.00</span></strong>
+
+            <small th:if="${producto.stock == 0}" class="agotado">Agotado</small>
+            <button th:if="${producto.stock == 0}" class="btn-agotado" disabled>
+                <i class="fa-solid fa-ban"></i>
+                Sin stock
+            </button>
+
+            <div th:if="${producto.stock > 0}">
+                <small>Stock: <span th:text="${producto.stock}">0</span></small>
+                <form th:action="@{/carrito/agregar}" method="get" class="form-carrito">
+                    <input type="hidden" name="productoId" th:value="${producto.id}">
+                    <input type="number" name="cantidad" value="1" min="1" th:max="${producto.stock}">
+                    <button type="submit">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        Agregar
+                    </button>
+                </form>
+            </div>
+        </article>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Urban Style - Proyecto Academico</p>
+</footer>
+</body>
+</html>

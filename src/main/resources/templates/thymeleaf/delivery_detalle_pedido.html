@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/carrito.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-receipt"></i> Pedido #<span th:text="${pedido.id}"></span></h1>
+    <nav>
+        <a th:href="@{/delivery/pedidos}">Mis pedidos</a>
+        <a th:href="@{/delivery/historial}">Historial</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="tabla-contenedor">
+        <h2>Datos de entrega</h2>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+        <div th:if="${pedido.cancelado}">
+            <p style="padding:12px 14px;border-radius:6px;background:#fee2e2;color:#991b1b;font-weight:700;">
+                Estado: CANCELADO
+            </p>
+            <p style="font-size:13px;color:#6b7280;" th:text="|Cancelado por ${pedido.canceladoPor}|"></p>
+            <p style="font-size:13px;color:#6b7280;" th:text="|Usuario: ${pedido.canceladoPorNombre}|"></p>
+            <p style="font-size:13px;color:#6b7280;" th:text="|Fecha cancelacion: ${pedido.fechaCanceladoTexto} ${pedido.horaCanceladoTexto}|"></p>
+            <p style="font-size:13px;color:#6b7280;" th:text="|Motivo: ${pedido.motivoCancelacion}|"></p>
+        </div>
+        <p th:text="|Cliente: ${pedido.usuario != null ? pedido.usuario.nombre : '-'}|"></p>
+        <p th:text="|Destinatario: ${pedido.nombreDestinatario}|"></p>
+        <p th:text="|Direccion completa: ${pedido.direccion}|"></p>
+        <p th:text="|Referencia: ${pedido.referenciaDireccion}|"></p>
+        <p th:text="|Celular: ${pedido.celularCliente}|"></p>
+        <p th:text="|DNI destinatario: ${pedido.dniDestinatario}|"></p>
+        <div th:if="${!pedido.cancelado}">
+            <p th:text="|Envio: ${pedido.tipoEnvio}|"></p>
+            <p th:text="|Costo delivery: S/ ${#numbers.formatDecimal(pedido.costoDelivery, 1, 2)}|"></p>
+            <p th:text="|Promocion delivery: ${pedido.promocionDelivery}|"></p>
+            <p th:text="|Metodo de pago: ${pedido.metodoPago}|"></p>
+            <p th:text="|Estado pago: ${pedido.estadoPago}|"></p>
+            <p>Estado: <span th:style="${pedido.estadoBadgeStyle}" th:text="${pedido.estado}"></span></p>
+        </div>
+        <div th:if="${pedido.cancelado}">
+            <p th:text="|Metodo pago: ${pedido.metodoPago}|"></p>
+            <p th:text="|Estado pago: ${pedido.estadoPago}|"></p>
+        </div>
+        <p th:text="|Fecha: ${pedido.fechaCompraTexto} ${pedido.horaCompraTexto}|"></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${pedido.items}">
+                <td th:text="${item.producto != null ? item.producto.nombre : '-'}"></td>
+                <td th:text="|S/ ${#numbers.formatDecimal(item.precioUnitario, 1, 2)}|"></td>
+                <td th:text="${item.cantidad}"></td>
+                <td th:text="|S/ ${#numbers.formatDecimal(item.subtotal, 1, 2)}|"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="resumen">
+        <p th:text="|Subtotal productos: S/ ${#numbers.formatDecimal(pedido.subtotalProductos, 1, 2)}|"></p>
+        <p th:text="|Descuento ${pedido.descuentoPorcentaje}%: -S/ ${#numbers.formatDecimal(pedido.montoDescuento, 1, 2)}|"></p>
+        <p th:text="|Promocion descuento: ${pedido.descripcionDescuentoAplicado}|"></p>
+        <p th:text="|Monto ahorrado: S/ ${#numbers.formatDecimal(pedido.montoDescuento, 1, 2)}|"></p>
+        <p th:text="|Subtotal con descuento: S/ ${#numbers.formatDecimal(pedido.subtotalConDescuento, 1, 2)}|"></p>
+        <div th:if="${!pedido.cancelado}">
+            <p th:text="|Delivery ${pedido.tipoEnvio}: S/ ${#numbers.formatDecimal(pedido.costoDelivery, 1, 2)}|"></p>
+            <p th:text="|Promocion delivery: ${pedido.promocionDelivery}|"></p>
+        </div>
+        <h3 th:text="|Total final: S/ ${#numbers.formatDecimal(pedido.total, 1, 2)}|"></h3>
+
+        <div th:if="${pedido.estado == 'Asignado'}">
+            <form th:action="@{/delivery/pedidos/{id}/estado(id=${pedido.id})}" method="post">
+                <input type="hidden" name="estado" value="En camino">
+                <button type="submit" class="btn-comprar">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    En camino
+                </button>
+            </form>
+            <form th:action="@{/delivery/pedidos/{id}/estado(id=${pedido.id})}" method="post" class="form-cancelacion">
+                <input type="hidden" name="estado" value="Cancelado">
+                <select name="motivo" class="motivo-select" required onchange="actualizarDetalleMotivo(this.form)">
+                    <option value="">Seleccione un motivo</option>
+                    <option th:each="motivo : ${motivosCancelacionRepartidor}"
+                            th:value="${motivo}"
+                            th:text="${motivo}"></option>
+                </select>
+                <input type="text" name="detalleMotivo" class="detalle-motivo" placeholder="Detalle adicional" style="display:none;">
+                <button type="submit" class="btn-comprar">
+                    <i class="fa-solid fa-ban"></i>
+                    Cancelar
+                </button>
+            </form>
+        </div>
+
+        <div th:if="${pedido.estado == 'En camino'}">
+            <form th:action="@{/delivery/pedidos/{id}/estado(id=${pedido.id})}" method="post">
+                <input type="hidden" name="estado" value="Entregado">
+                <button type="submit" class="btn-comprar">
+                    <i class="fa-solid fa-house-circle-check"></i>
+                    Entregado
+                </button>
+            </form>
+            <form th:action="@{/delivery/pedidos/{id}/estado(id=${pedido.id})}" method="post" class="form-cancelacion">
+                <input type="hidden" name="estado" value="Cancelado">
+                <select name="motivo" class="motivo-select" required onchange="actualizarDetalleMotivo(this.form)">
+                    <option value="">Seleccione un motivo</option>
+                    <option th:each="motivo : ${motivosCancelacionRepartidor}"
+                            th:value="${motivo}"
+                            th:text="${motivo}"></option>
+                </select>
+                <input type="text" name="detalleMotivo" class="detalle-motivo" placeholder="Detalle adicional" style="display:none;">
+                <button type="submit" class="btn-comprar">
+                    <i class="fa-solid fa-ban"></i>
+                    Cancelar
+                </button>
+            </form>
+        </div>
+
+        <p th:if="${pedido.estado == 'Entregado' or pedido.estado == 'Cancelado'}">Pedido finalizado</p>
+    </section>
+</main>
+<script>
+    function actualizarDetalleMotivo(form) {
+        var select = form.querySelector(".motivo-select");
+        var detalle = form.querySelector(".detalle-motivo");
+
+        if (!select || !detalle) {
+            return;
+        }
+
+        var requiereDetalle = select.value === "Otro";
+        detalle.style.display = requiereDetalle ? "inline-block" : "none";
+        detalle.required = requiereDetalle;
+
+        if (!requiereDetalle) {
+            detalle.value = "";
+        }
+    }
+</script>
+</body>
+</html>

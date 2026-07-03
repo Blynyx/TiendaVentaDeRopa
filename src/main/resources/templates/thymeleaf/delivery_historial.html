@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial Delivery</title>
+    <link rel="stylesheet" th:href="@{/css/crud_productos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-clock-rotate-left"></i> Historial de entregas</h1>
+    <nav>
+        <a th:href="@{/delivery/pedidos}">Mis pedidos</a>
+        <a th:href="@{/delivery/historial}">Historial</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="titulo">
+        <h2 th:text="${repartidor.nombreCompleto}"></h2>
+        <p>Pedidos entregados o cancelados.</p>
+    </section>
+
+    <section class="tabla-contenedor">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Destinatario</th>
+                <th>Entrega</th>
+                <th>Estado</th>
+                <th>Fecha pedido</th>
+                <th>Total</th>
+                <th>Pago</th>
+                <th>Estado pago</th>
+                <th>Cancelacion</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="|#${pedido.id}|"></td>
+                <td th:text="${pedido.usuario != null ? pedido.usuario.nombre : '-'}"></td>
+                <td th:text="${pedido.nombreDestinatario}"></td>
+                <td>
+                    <span th:text="${pedido.tipoEnvio}"></span>
+                    <span th:if="${pedido.express and !pedido.cancelado}"
+                          style="display:inline-block;padding:4px 8px;border-radius:6px;background:#ff5a1f;color:white;font-size:12px;font-weight:700;">EXPRESS</span>
+                </td>
+                <td>
+                    <span th:if="${pedido.cancelado}"
+                          style="display:inline-block;padding:4px 8px;border-radius:6px;background:#dc2626;color:white;font-size:12px;font-weight:700;">CANCELADO</span>
+                    <span th:unless="${pedido.cancelado}" th:style="${pedido.estadoBadgeStyle}" th:text="${pedido.estado}"></span>
+                </td>
+                <td th:text="|${pedido.fechaCompraTexto} ${pedido.horaCompraTexto}|"></td>
+                <td th:text="|S/ ${#numbers.formatDecimal(pedido.total, 1, 2)}|"></td>
+                <td th:text="${pedido.metodoPago}"></td>
+                <td th:text="${pedido.estadoPago}"></td>
+                <td>
+                    <div th:if="${pedido.cancelado}">
+                        <p th:text="|Fecha: ${pedido.fechaCanceladoTexto} ${pedido.horaCanceladoTexto}|"></p>
+                        <p th:text="|Cancelado por: ${pedido.canceladoPor}|"></p>
+                        <p th:text="|Motivo: ${pedido.motivoCancelacion}|"></p>
+                        <p th:if="${pedido.repartidor != null}" th:text="|Repartidor historico: ${pedido.repartidor.nombreCompleto}|"></p>
+                    </div>
+                </td>
+                <td class="acciones-tabla">
+                    <a th:href="@{/delivery/pedidos/{id}(id=${pedido.id})}" class="btn-editar">Detalle</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

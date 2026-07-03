@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/agregar_producto.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-truck-fast"></i> Datos de Delivery</h1>
+    <nav>
+        <a th:href="@{/catalogo}"><i class="fa-solid fa-shirt"></i> Catalogo</a>
+        <a th:href="@{/carrito}"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+        <a th:href="@{/mis-compras}"><i class="fa-solid fa-bag-shopping"></i> Mis compras</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+    </nav>
+</header>
+
+<main>
+    <section class="formulario-container">
+        <h2>Confirmar pedido</h2>
+        <p>Cliente: <span th:text="${usuario.nombre}">Cliente</span></p>
+        <section class="resumen-checkout">
+            <h3>Resumen del pedido</h3>
+            <p>Subtotal productos: S/ <span th:text="${#numbers.formatDecimal(subtotal, 1, 2)}">0.00</span></p>
+            <p>Descuento <span th:text="${descuentoPorcentaje}">0</span>%: -S/ <span th:text="${#numbers.formatDecimal(montoDescuento, 1, 2)}">0.00</span></p>
+            <p>Monto ahorrado: S/ <span th:text="${#numbers.formatDecimal(montoDescuento, 1, 2)}">0.00</span></p>
+            <p>Subtotal con descuento: S/ <span th:text="${#numbers.formatDecimal(subtotalConDescuento, 1, 2)}">0.00</span></p>
+            <div class="opciones-delivery">
+                <article>
+                    <strong>Entrega Normal</strong>
+                    <span th:text="${promocionNormal}">Promocion</span>
+                    <p>Delivery: S/ <span th:text="${#numbers.formatDecimal(costoNormal, 1, 2)}">0.00</span></p>
+                    <h4>Total final: S/ <span th:text="${#numbers.formatDecimal(totalNormal, 1, 2)}">0.00</span></h4>
+                </article>
+                <article>
+                    <strong>Entrega Express</strong>
+                    <span th:text="${promocionExpress}">Promocion</span>
+                    <p>Delivery: S/ <span th:text="${#numbers.formatDecimal(costoExpress, 1, 2)}">0.00</span></p>
+                    <h4>Total final: S/ <span th:text="${#numbers.formatDecimal(totalExpress, 1, 2)}">0.00</span></h4>
+                </article>
+            </div>
+        </section>
+
+        <section class="promociones-checkout">
+            <h3>Promociones activas</h3>
+            <p th:each="promocion : ${mensajesPromocion}">
+                <i class="fa-solid fa-tag"></i>
+                <span th:text="${promocion}">Promocion</span>
+            </p>
+        </section>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+
+        <form th:action="@{/pedidos/crear}" method="post">
+            <input type="hidden" name="checkoutToken" th:value="${checkoutToken}">
+            <label for="direccion">Direccion de entrega</label>
+            <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 123" required>
+
+            <label for="referenciaDireccion">Referencia de direccion</label>
+            <input type="text" id="referenciaDireccion" name="referenciaDireccion" placeholder="Ej: Casa azul, segundo piso" required>
+
+            <label for="nombreDestinatario">Nombre completo del destinatario</label>
+            <input type="text" id="nombreDestinatario" name="nombreDestinatario" placeholder="Persona que recibira el pedido" required>
+
+            <label for="dniDestinatario">DNI del destinatario</label>
+            <input type="text" id="dniDestinatario" name="dniDestinatario" pattern="[0-9]{8}" inputmode="numeric" minlength="8" maxlength="8" placeholder="Solo numeros" required>
+
+            <label for="celularCliente">Numero de celular</label>
+            <input type="text" id="celularCliente" name="celularCliente" pattern="[0-9]{9}" minlength="9" maxlength="9" inputmode="numeric" placeholder="Solo numeros" required>
+
+            <label for="tipoEnvio">Tipo de envio</label>
+            <select id="tipoEnvio" name="tipoEnvio" required>
+                <option th:value="${envioNormal}" th:text="${envioNormal}">Normal</option>
+                <option th:value="${envioExpress}" th:text="${envioExpress}">Express</option>
+            </select>
+
+            <label for="metodoPago">Metodo de pago</label>
+            <select id="metodoPago" name="metodoPago" required>
+                <option value="">Seleccione metodo de pago</option>
+                <option th:value="${pagoContraEntrega}" th:text="${pagoContraEntrega}">Contra entrega</option>
+                <option th:value="${pagoTarjeta}" th:text="${pagoTarjeta}">Tarjeta</option>
+            </select>
+
+            <section id="pagoTarjeta" class="pago-bloque">
+                <h3><i class="fa-solid fa-credit-card"></i> Pago con tarjeta</h3>
+                <p id="mensajeTarjeta" class="mensaje-error-pago"></p>
+
+                <label for="numeroTarjeta">Numero tarjeta</label>
+                <input type="text" id="numeroTarjeta" name="numeroTarjeta" inputmode="numeric" pattern="[0-9]{16}" minlength="16" maxlength="16" placeholder="0000000000000000">
+
+                <label for="titularTarjeta">Titular tarjeta</label>
+                <input type="text" id="titularTarjeta" name="titularTarjeta" placeholder="Nombre del titular">
+
+                <label for="fechaVencimiento">Fecha vencimiento</label>
+                <input type="month" id="fechaVencimiento" name="fechaVencimiento">
+
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" inputmode="numeric" pattern="[0-9]{3}" minlength="3" maxlength="3" placeholder="123">
+            </section>
+
+            <section id="pagoContraEntrega" class="pago-bloque">
+                <h3><i class="fa-solid fa-hand-holding-dollar"></i> Contra entrega</h3>
+                <small>Paga al recibir tu pedido.</small>
+            </section>
+
+            <section class="botones">
+                <button type="submit" class="btn-guardar" id="crearPedidoBtn">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Crear pedido</span>
+                </button>
+                <a th:href="@{/carrito}" class="btn-cancelar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver
+                </a>
+            </section>
+        </form>
+    </section>
+</main>
+<script>
+    const metodoPago = document.getElementById('metodoPago');
+    const formulario = document.querySelector('form[action="/pedidos/crear"]');
+    const crearPedidoBtn = document.getElementById('crearPedidoBtn');
+    const numeroTarjeta = document.getElementById('numeroTarjeta');
+    const cvv = document.getElementById('cvv');
+    const fechaVencimiento = document.getElementById('fechaVencimiento');
+    const mensajeTarjeta = document.getElementById('mensajeTarjeta');
+    const bloquesPago = {
+        'Tarjeta': document.getElementById('pagoTarjeta'),
+        'Contra entrega': document.getElementById('pagoContraEntrega')
+    };
+
+    const hoy = new Date();
+    const mesActual = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
+    fechaVencimiento.min = mesActual;
+
+    function actualizarMetodoPago() {
+        Object.values(bloquesPago).forEach(bloque => bloque.classList.remove('pago-visible'));
+        mensajeTarjeta.textContent = '';
+        numeroTarjeta.required = metodoPago.value === 'Tarjeta';
+        cvv.required = metodoPago.value === 'Tarjeta';
+        fechaVencimiento.required = metodoPago.value === 'Tarjeta';
+        actualizarValidezNumeroTarjeta();
+        actualizarValidezCvv();
+
+        if (bloquesPago[metodoPago.value]) {
+            bloquesPago[metodoPago.value].classList.add('pago-visible');
+        }
+    }
+
+    function numeroTarjetaInvalido() {
+        return metodoPago.value === 'Tarjeta' && !/^\d{16}$/.test(numeroTarjeta.value);
+    }
+
+    function actualizarValidezNumeroTarjeta() {
+        numeroTarjeta.setCustomValidity(numeroTarjetaInvalido() ? 'El numero de tarjeta debe tener 16 digitos.' : '');
+    }
+
+    function cvvInvalido() {
+        return metodoPago.value === 'Tarjeta' && !/^\d{3}$/.test(cvv.value);
+    }
+
+    function actualizarValidezCvv() {
+        cvv.setCustomValidity(cvvInvalido() ? 'El CVV debe tener 3 digitos.' : '');
+    }
+
+    function tarjetaEstaVencida() {
+        return metodoPago.value === 'Tarjeta' && (!fechaVencimiento.value || fechaVencimiento.value < mesActual);
+    }
+
+    metodoPago.addEventListener('change', actualizarMetodoPago);
+    numeroTarjeta.addEventListener('input', () => {
+        numeroTarjeta.value = numeroTarjeta.value.replace(/\D/g, '').slice(0, 16);
+        actualizarValidezNumeroTarjeta();
+        mensajeTarjeta.textContent = numeroTarjetaInvalido() ? 'El numero de tarjeta debe tener 16 digitos.' : '';
+    });
+    cvv.addEventListener('input', () => {
+        cvv.value = cvv.value.replace(/\D/g, '').slice(0, 3);
+        actualizarValidezCvv();
+        mensajeTarjeta.textContent = cvvInvalido() ? 'El CVV debe tener 3 digitos.' : '';
+    });
+    fechaVencimiento.addEventListener('change', () => {
+        mensajeTarjeta.textContent = tarjetaEstaVencida() ? 'La tarjeta esta vencida.' : '';
+    });
+    formulario.addEventListener('submit', evento => {
+        if (numeroTarjetaInvalido()) {
+            evento.preventDefault();
+            mensajeTarjeta.textContent = 'El numero de tarjeta debe tener 16 digitos.';
+            numeroTarjeta.focus();
+            return;
+        }
+
+        if (tarjetaEstaVencida()) {
+            evento.preventDefault();
+            mensajeTarjeta.textContent = 'La tarjeta esta vencida.';
+            fechaVencimiento.focus();
+            return;
+        }
+
+        if (cvvInvalido()) {
+            evento.preventDefault();
+            mensajeTarjeta.textContent = 'El CVV debe tener 3 digitos.';
+            cvv.focus();
+            return;
+        }
+
+        crearPedidoBtn.disabled = true;
+        crearPedidoBtn.querySelector('span').textContent = 'Procesando pedido...';
+    });
+    actualizarMetodoPago();
+</script>
+</body>
+</html>

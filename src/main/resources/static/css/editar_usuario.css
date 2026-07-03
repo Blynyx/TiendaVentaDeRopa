@@ -1,0 +1,164 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+    color: #333;
+}
+
+/* HEADER */
+.header{
+    background-color: #ea580c;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.header h1{
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+/* NAV */
+nav{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+nav a:hover{
+    background-color: #c2410c;
+}
+
+/* MAIN */
+main{
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+/* FORMULARIO */
+.formulario-container{
+    background-color: white;
+
+    width: 100%;
+    max-width: 700px;
+
+    padding: 40px;
+
+    border-radius: 12px;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+.formulario-container h2{
+    color: #9a3412;
+    margin-bottom: 10px;
+}
+
+.formulario-container p{
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* LABEL */
+label{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* INPUTS */
+input,
+select{
+    width: 100%;
+
+    padding: 14px;
+
+    margin-bottom: 20px;
+
+    border: 2px solid #fed7aa;
+    border-radius: 8px;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+input:focus,
+select:focus{
+    outline: none;
+    border-color: #f97316;
+}
+
+/* BOTONES */
+.botones{
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* BOTON ACTUALIZAR */
+.btn-actualizar{
+    background-color: #f97316;
+    color: white;
+
+    border: none;
+
+    padding: 14px 22px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.btn-actualizar:hover{
+    background-color: #ea580c;
+}
+
+/* BOTON VOLVER */
+.btn-volver{
+    background-color: #dc2626;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 22px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.btn-volver:hover{
+    background-color: #b91c1c;
+}
+
+/* FOOTER */
+footer{
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}

@@ -1,0 +1,149 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+    color: #333;
+}
+
+/* HEADER */
+.header{
+    background-color: #ea580c;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.header h1{
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+/* NAV */
+nav{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+nav a:hover{
+    background-color: #c2410c;
+}
+
+/* HERO */
+.hero{
+    background: linear-gradient(
+            rgba(0,0,0,0.5),
+            rgba(0,0,0,0.5)
+    ),
+    url("../img/banner.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    color: white;
+    text-align: center;
+
+    padding: 100px 20px;
+}
+
+.hero h2{
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.hero p{
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* BOTÓN HERO */
+.hero a{
+    display: inline-block;
+    background-color: #f97316;
+    color: white;
+    text-decoration: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hero a:hover{
+    background-color: #ea580c;
+}
+
+/* MAIN */
+main{
+    padding: 50px;
+}
+
+/* MÓDULOS */
+.modulos{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+/* CARD */
+.card{
+    background-color: white;
+    padding: 35px 25px;
+    border-radius: 12px;
+    text-align: center;
+
+    border-top: 6px solid #f97316;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+
+    transition: 0.3s;
+}
+
+.card:hover{
+    transform: translateY(-5px);
+}
+
+/* ICONOS */
+.icono{
+    font-size: 50px;
+    color: #f97316;
+    margin-bottom: 20px;
+}
+
+/* TÍTULOS */
+.card h3{
+    color: #c2410c;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+/* TEXTO */
+.card p{
+    color: #555;
+    line-height: 1.6;
+}
+
+/* FOOTER */
+footer{
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}

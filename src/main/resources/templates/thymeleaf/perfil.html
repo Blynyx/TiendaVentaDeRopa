@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/metricas.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-user"></i> Perfil</h1>
+    <nav>
+        <a th:href="@{/principal}">Inicio</a>
+        <a th:href="@{/catalogo}">Catalogo</a>
+        <a th:href="@{/mis-compras}">Mis compras</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="metricas">
+        <article class="grafico-card">
+            <h3 th:text="${usuario.nombre}">Usuario</h3>
+            <p>Correo: <span th:text="${usuario.correo}">correo</span></p>
+            <p>Rol: <span th:text="${usuario.rol}">rol</span></p>
+        </article>
+    </section>
+</main>
+</body>
+</html>

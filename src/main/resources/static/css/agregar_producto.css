@@ -1,0 +1,230 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+    color: #333;
+}
+
+/* HEADER */
+.header{
+    background-color: #ea580c;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.header h1{
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+/* NAV */
+nav{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+nav a:hover{
+    background-color: #c2410c;
+}
+
+/* MAIN */
+main{
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+/* FORMULARIO */
+.formulario-container{
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+/* TITULOS */
+.formulario-container h2{
+    color: #9a3412;
+    margin-bottom: 10px;
+}
+
+.formulario-container p{
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.resumen-checkout,
+.promociones-checkout{
+    background-color: #fff7ed;
+    border: 2px solid #fed7aa;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.resumen-checkout h3,
+.promociones-checkout h3{
+    color: #9a3412;
+    margin-bottom: 12px;
+}
+
+.resumen-checkout p,
+.promociones-checkout p{
+    margin-bottom: 10px;
+}
+
+.opciones-delivery{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.opciones-delivery article{
+    background-color: white;
+    border-left: 5px solid #f97316;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.opciones-delivery strong,
+.opciones-delivery span{
+    display: block;
+    margin-bottom: 8px;
+}
+
+.opciones-delivery span{
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.opciones-delivery h4{
+    color: #9a3412;
+    margin-top: 8px;
+}
+
+.pago-bloque{
+    display: none;
+    background-color: #fff7ed;
+    border: 2px solid #fed7aa;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.pago-bloque.pago-visible{
+    display: block;
+}
+
+.pago-bloque h3{
+    color: #9a3412;
+    margin-bottom: 10px;
+}
+
+.pago-bloque p{
+    margin-bottom: 10px;
+}
+
+.pago-bloque small{
+    display: block;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.pago-bloque strong{
+    color: #16a34a;
+}
+
+.mensaje-error-pago{
+    color: #dc2626;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* LABEL */
+label{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* INPUT Y SELECT */
+input,
+select{
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 2px solid #fed7aa;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* FOCUS */
+input:focus,
+select:focus{
+    outline: none;
+    border-color: #f97316;
+}
+
+/* BOTONES */
+.botones{
+    display: flex;
+    gap: 15px;
+}
+
+/* GUARDAR */
+.btn-guardar{
+    background-color: #f97316;
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-guardar:hover{
+    background-color: #ea580c;
+}
+
+/* CANCELAR */
+.btn-cancelar{
+    background-color: #dc2626;
+    color: white;
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-cancelar:hover{
+    background-color: #b91c1c;
+}
+
+/* FOOTER */
+footer{
+    margin-top: 50px;
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}

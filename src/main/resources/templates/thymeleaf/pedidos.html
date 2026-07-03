@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/crud_productos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-box"></i> Gestion de Pedidos</h1>
+    <nav>
+        <a th:href="@{/gestion}">Administracion</a>
+        <a th:href="@{/productos}">Productos</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/metricas}">Metricas</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="titulo">
+        <h2>Pedidos realizados</h2>
+        <p>Administra asignacion, repartidor y estado de entrega.</p>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+    </section>
+
+    <section class="tabla-contenedor">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Entrega</th>
+                <th>Total</th>
+                <th>Pago</th>
+                <th>Estado pago</th>
+                <th>Estado</th>
+                <th>Repartidor</th>
+                <th>Cancelacion</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="|#${pedido.id}|"></td>
+                <td th:text="${pedido.usuario != null ? pedido.usuario.nombre : '-'}"></td>
+                <td th:text="|${pedido.fechaCompraTexto} ${pedido.horaCompraTexto}|"></td>
+                <td>
+                    <span th:text="${pedido.tipoEnvio}"></span>
+                    <span th:if="${pedido.express and !pedido.cancelado}"
+                          style="display:inline-block;padding:4px 8px;border-radius:6px;background:#ff5a1f;color:white;font-size:12px;font-weight:700;">EXPRESS</span>
+                </td>
+                <td th:text="|S/ ${#numbers.formatDecimal(pedido.total, 1, 2)}|"></td>
+                <td th:text="${pedido.metodoPago}"></td>
+                <td th:text="${pedido.estadoPago}"></td>
+                <td>
+                    <span th:if="${pedido.cancelado}"
+                          style="display:inline-block;padding:4px 8px;border-radius:6px;background:#dc2626;color:white;font-size:12px;font-weight:700;">CANCELADO</span>
+                    <span th:unless="${pedido.cancelado}" th:style="${pedido.estadoBadgeStyle}" th:text="${pedido.estado}"></span>
+                </td>
+                <td>
+                    <span th:if="${pedido.cancelado and pedido.repartidor != null}">
+                        Historico: <span th:text="${pedido.repartidor.nombreCompleto}"></span>
+                    </span>
+                    <span th:if="${pedido.cancelado and pedido.repartidor == null}">-</span>
+                    <span th:if="${!pedido.cancelado and pedido.repartidor != null}" th:text="${pedido.repartidor.nombreCompleto}"></span>
+                    <span th:if="${!pedido.cancelado and pedido.repartidor == null}">Sin asignar</span>
+                </td>
+                <td>
+                    <div th:if="${pedido.cancelado}">
+                        <p th:text="|Fecha: ${pedido.fechaCanceladoTexto} ${pedido.horaCanceladoTexto}|"></p>
+                        <p th:text="|Cancelado por: ${pedido.canceladoPor}|"></p>
+                        <p th:text="|Motivo: ${pedido.motivoCancelacion}|"></p>
+                    </div>
+                </td>
+                <td class="acciones-tabla">
+                    <a th:href="@{/pedido/detalle(id=${pedido.id})}" class="btn-editar">Detalle</a>
+                    <div th:if="${pedido.estado != 'Entregado' and pedido.estado != 'Cancelado'}" style="display:inline;">
+                        <a th:if="${pedido.repartidor == null}"
+                           th:href="@{/pedido/asignar(pedidoId=${pedido.id})}"
+                           class="btn-agregar">Asignar</a>
+
+                        <form th:if="${pedido.repartidor != null and pedido.desasignable}"
+                              th:action="@{/pedido/desasignar}"
+                              method="post"
+                              style="display:inline-block;">
+                            <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                            <button type="submit" class="btn-eliminar">Quitar asignacion</button>
+                        </form>
+
+                        <span th:if="${pedido.repartidor != null and !pedido.desasignable}"
+                              style="font-size:12px;color:#6b7280;">No editable</span>
+
+                        <form th:action="@{/pedido/cancelar/admin}" method="post" class="form-cancelacion" style="display:inline-block;">
+                            <input type="hidden" name="id" th:value="${pedido.id}">
+                            <select name="motivo" class="motivo-select" required onchange="actualizarDetalleMotivo(this.form)">
+                                <option value="">Seleccione un motivo</option>
+                                <option th:each="motivo : ${motivosCancelacionAdmin}"
+                                        th:value="${motivo}"
+                                        th:text="${motivo}"></option>
+                            </select>
+                            <input type="text" name="detalleMotivo" class="detalle-motivo" placeholder="Detalle adicional" style="display:none;">
+                            <button type="submit" class="btn-eliminar">Cancelar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<script>
+    function actualizarDetalleMotivo(form) {
+        var select = form.querySelector(".motivo-select");
+        var detalle = form.querySelector(".detalle-motivo");
+
+        if (!select || !detalle) {
+            return;
+        }
+
+        var requiereDetalle = select.value === "Otro";
+        detalle.style.display = requiereDetalle ? "inline-block" : "none";
+        detalle.required = requiereDetalle;
+
+        if (!requiereDetalle) {
+            detalle.value = "";
+        }
+    }
+</script>
+</body>
+</html>

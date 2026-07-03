@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Categoria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/agregar_categoria.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-plus"></i> Nueva Categoria</h1>
+    <nav>
+        <a th:href="@{/principal}"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a th:href="@{/categorias}"><i class="fa-solid fa-layer-group"></i> Categorias</a>
+        <a th:href="@{/gestion}"><i class="fa-solid fa-gear"></i> Administracion</a>
+    </nav>
+</header>
+
+<main>
+    <section class="formulario-container">
+        <h2>Registrar Categoria</h2>
+        <p>Complete los datos para agregar una nueva categoria.</p>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+
+        <form th:action="@{/categorias/guardar}" method="get">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ingrese el nombre" required>
+
+            <label for="descripcion">Descripcion</label>
+            <input type="text" id="descripcion" name="descripcion" placeholder="Ingrese la descripcion" required>
+
+            <section class="botones">
+                <button type="submit" class="btn-guardar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar
+                </button>
+                <a th:href="@{/categorias}" class="btn-cancelar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Cancelar
+                </a>
+            </section>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Urban Style - Proyecto Academico</p>
+</footer>
+</body>
+</html>

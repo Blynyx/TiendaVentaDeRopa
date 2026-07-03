@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Compras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/crud_productos.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-bag-shopping"></i> Mis Compras</h1>
+    <nav>
+        <a th:href="@{/principal}">Inicio</a>
+        <a th:href="@{/catalogo}">Catalogo</a>
+        <a th:href="@{/carrito}">Carrito</a>
+        <a th:href="@{/publicidad}">Promociones</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+        <a th:href="@{/perfil}">Perfil</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="titulo">
+        <h2>Pedidos realizados</h2>
+        <p>Consulta tus compras y revisa el seguimiento desde el detalle.</p>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+    </section>
+
+    <section class="tabla-contenedor">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Cancelacion</th>
+                <th>Accion</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td>#<span th:text="${pedido.id}">1</span></td>
+                <td><span th:text="${pedido.fechaCompraTexto}"></span> <span th:text="${pedido.horaCompraTexto}"></span></td>
+                <td>S/ <span th:text="${#numbers.formatDecimal(pedido.total, 1, 2)}">0.00</span></td>
+                <td><span th:style="${pedido.estadoBadgeStyle}" th:text="${pedido.estado}">Estado</span></td>
+                <td>
+                    <div th:if="${pedido.cancelado}">
+                        <p>Fecha: <span th:text="${pedido.fechaCanceladoTexto}"></span> <span th:text="${pedido.horaCanceladoTexto}"></span></p>
+                        <p>Cancelado por: <span th:text="${pedido.canceladoPor}"></span></p>
+                        <p>Motivo: <span th:text="${pedido.motivoCancelacion}"></span></p>
+                    </div>
+                </td>
+                <td>
+                    <a th:href="@{/pedido/detalle(id=${pedido.id})}" class="btn-editar">Ver detalle</a>
+                    <a th:if="${pedido.estado == 'Pendiente'}" th:href="@{/pedido/editar-datos(id=${pedido.id})}" class="btn-editar">Editar datos</a>
+                    <form th:if="${pedido.cancelablePorCliente}" th:action="@{/pedido/cancelar}" method="post" class="form-cancelacion" style="display:inline-block;">
+                        <input type="hidden" name="id" th:value="${pedido.id}">
+                        <select name="motivo" class="motivo-select" required onchange="actualizarDetalleMotivo(this.form)">
+                            <option value="">Seleccione un motivo</option>
+                            <option th:each="motivo : ${motivosCancelacionCliente}" th:value="${motivo}" th:text="${motivo}"></option>
+                        </select>
+                        <input type="text" name="detalleMotivo" class="detalle-motivo" placeholder="Detalle adicional" style="display:none;">
+                        <button type="submit" class="btn-eliminar">Cancelar pedido</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<script>
+    function actualizarDetalleMotivo(form) {
+        var select = form.querySelector(".motivo-select");
+        var detalle = form.querySelector(".detalle-motivo");
+
+        if (!select || !detalle) {
+            return;
+        }
+
+        var requiereDetalle = select.value === "Otro";
+        detalle.style.display = requiereDetalle ? "inline-block" : "none";
+        detalle.required = requiereDetalle;
+
+        if (!requiereDetalle) {
+            detalle.value = "";
+        }
+    }
+</script>
+</body>
+</html>

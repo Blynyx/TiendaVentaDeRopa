@@ -1,0 +1,190 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+    color: #333;
+}
+
+/* HEADER */
+.header{
+    background-color: #ea580c;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.header h1{
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+/* NAV */
+nav{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+nav a:hover{
+    background-color: #c2410c;
+}
+
+/* MAIN */
+main{
+    padding: 50px;
+}
+
+/* TITULO */
+.titulo{
+    margin-bottom: 30px;
+}
+
+.titulo h2{
+    color: #9a3412;
+}
+
+.titulo p{
+    color: #666;
+}
+
+/* BOTON */
+.btn-agregar{
+    background-color: #f97316;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-agregar:hover{
+    background-color: #ea580c;
+}
+
+/* TABLA */
+table{
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+thead{
+    background-color: #f97316;
+    color: white;
+}
+
+th, td{
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover{
+    background-color: #fff1e6;
+}
+
+/* ACCIONES */
+.acciones-tabla{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* BOTONES */
+.btn-editar{
+    background-color: #2563eb;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.btn-eliminar{
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-cancelacion select,
+.form-cancelacion input{
+    width: 180px;
+    max-width: 100%;
+    margin: 4px 0;
+    padding: 9px 10px;
+    border: 1px solid #fed7aa;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.btn-reactivar{
+    background-color: #16a34a;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-reactivar:hover{
+    background-color: #15803d;
+}
+
+.btn-bloqueado{
+    background-color: #9ca3af;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+.badge-estado{
+    display: inline-block;
+    min-width: 96px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.badge-estado.activo{
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge-estado.inactivo{
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* FOOTER */
+footer{
+    margin-top: 50px;
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/carrito.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-cart-shopping"></i> Carrito de Compras</h1>
+    <nav>
+        <a th:href="@{/principal}"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a th:href="@{/catalogo}"><i class="fa-solid fa-tags"></i> Catalogo</a>
+        <a th:href="@{/mis-compras}"><i class="fa-solid fa-bag-shopping"></i> Mis compras</a>
+        <a th:href="@{/publicidad}"><i class="fa-solid fa-bullhorn"></i> Promociones</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+        <a th:href="@{/perfil}"><i class="fa-solid fa-user"></i> Perfil</a>
+        <a th:href="@{/logout}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="tabla-contenedor">
+        <h2>Productos seleccionados</h2>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" class="mensaje-alerta" th:text="${mensaje}"></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Accion</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.producto.nombre}">Producto</td>
+                <td>S/ <span th:text="${#numbers.formatDecimal(item.precioUnitario, 1, 2)}">0.00</span></td>
+                <td>
+                    <section class="cantidad-control">
+                        <a th:href="@{/carrito/disminuir(productoId=${item.producto.id})}" class="btn-cantidad">-</a>
+                        <span th:text="${item.cantidad}">1</span>
+                        <a th:href="@{/carrito/aumentar(productoId=${item.producto.id})}" class="btn-cantidad">+</a>
+                    </section>
+                    <small>Stock: <span th:text="${item.producto.stock}">0</span></small>
+                    <small th:if="${item.producto.stock == 0}" style="display:block;color:#dc2626;font-weight:700;">
+                        Producto agotado. Disponible: 0 unidades.
+                    </small>
+                    <small th:if="${item.producto.stock > 0 and item.cantidad > item.producto.stock}" style="display:block;color:#dc2626;font-weight:700;">
+                        Cantidad solicitada: <span th:text="${item.cantidad}">0</span>.
+                        Cantidad disponible: <span th:text="${item.producto.stock}">0</span>.
+                    </small>
+                </td>
+                <td>S/ <span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}">0.00</span></td>
+                <td>
+                    <a th:href="@{/carrito/eliminar(productoId=${item.producto.id})}" class="btn-eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="resumen">
+        <h3>Total: S/ <span th:text="${#numbers.formatDecimal(total, 1, 2)}">0.00</span></h3>
+        <a th:href="@{/catalogo}" class="btn-comprar">
+            <i class="fa-solid fa-arrow-left"></i>
+            Seguir comprando
+        </a>
+        <a th:if="${stockDisponible}" th:href="@{/checkout}" class="btn-comprar">
+            <i class="fa-solid fa-truck"></i>
+            Ir a delivery
+        </a>
+        <p th:unless="${stockDisponible}" class="mensaje-alerta">Actualice las cantidades para continuar al checkout.</p>
+        <a th:href="@{/carrito/vaciar}" class="btn-comprar btn-secundario">
+            <i class="fa-solid fa-broom"></i>
+            Vaciar carrito
+        </a>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Urban Style - Proyecto Academico</p>
+</footer>
+</body>
+</html>

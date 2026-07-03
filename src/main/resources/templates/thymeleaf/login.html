@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+<main class="login-container">
+    <section class="login-box">
+        <i class="fa-solid fa-user-lock icono-login"></i>
+        <h1>Iniciar Sesion</h1>
+        <p>Accede a Urban Style</p>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+
+        <form th:action="@{/login/ingresar}" method="get">
+            <label for="correo">Correo</label>
+            <section class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="correo" name="correo" placeholder="usuario@gmail.com" required>
+            </section>
+
+            <label for="password">Contrasena</label>
+            <section class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="********" required>
+            </section>
+
+            <button type="submit">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Ingresar
+            </button>
+        </form>
+
+        <a th:href="@{/registro}">Crear cuenta nueva</a>
+    </section>
+</main>
+</body>
+</html>

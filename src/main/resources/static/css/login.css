@@ -1,0 +1,140 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+
+    background: linear-gradient(
+            135deg,
+            #ea580c,
+            #f97316
+    );
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CONTENEDOR */
+.login-container{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+/* CAJA LOGIN */
+.login-box{
+    background-color: white;
+
+    width: 100%;
+    max-width: 420px;
+
+    padding: 45px;
+
+    border-radius: 15px;
+
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.15);
+
+    text-align: center;
+}
+
+/* ICONO */
+.icono-login{
+    font-size: 60px;
+    color: #f97316;
+    margin-bottom: 20px;
+}
+
+/* TITULOS */
+.login-box h1{
+    color: #c2410c;
+    margin-bottom: 10px;
+}
+
+.login-box p{
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* LABEL */
+label{
+    display: block;
+
+    text-align: left;
+
+    margin-bottom: 8px;
+
+    color: #444;
+
+    font-weight: 500;
+}
+
+/* INPUT GROUP */
+.input-group{
+    display: flex;
+    align-items: center;
+
+    border: 2px solid #f97316;
+    border-radius: 8px;
+
+    margin-bottom: 20px;
+    padding: 0 12px;
+
+    background-color: #fff7f2;
+}
+
+/* ICONOS INPUT */
+.input-group i{
+    color: #f97316;
+    margin-right: 10px;
+}
+
+/* INPUT */
+.input-group input{
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 14px 0;
+
+    background: transparent;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+/* BOTÓN */
+button{
+    width: 100%;
+
+    background-color: #f97316;
+    color: white;
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+button:hover{
+    background-color: #ea580c;
+}

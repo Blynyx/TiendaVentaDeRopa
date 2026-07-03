@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metricas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/metricas.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-chart-line"></i> Metricas del Sistema</h1>
+    <nav>
+        <a th:href="@{/gestion}"><i class="fa-solid fa-gauge"></i> Administracion</a>
+        <a th:href="@{/productos}"><i class="fa-solid fa-shirt"></i> Productos</a>
+        <a th:href="@{/pedidos}"><i class="fa-solid fa-box"></i> Pedidos</a>
+        <a th:href="@{/logout}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="titulo">
+        <h2>Series de tiempo</h2>
+        <p>Graficos temporales calculados exclusivamente desde las fechas registradas en pedidos.</p>
+    </section>
+
+    <section class="series-grid">
+        <article class="serie-card">
+            <h3><i class="fa-solid fa-coins"></i> Ventas por dia</h3>
+            <section class="grafico-linea">
+                <canvas id="ventasPorDiaChart"></canvas>
+            </section>
+        </article>
+
+        <article class="serie-card">
+            <h3><i class="fa-solid fa-calendar-plus"></i> Pedidos creados por dia</h3>
+            <section class="grafico-linea">
+                <canvas id="pedidosCreadosChart"></canvas>
+            </section>
+        </article>
+
+        <article class="serie-card">
+            <h3><i class="fa-solid fa-circle-check"></i> Pedidos entregados por dia</h3>
+            <section class="grafico-linea">
+                <canvas id="pedidosEntregadosChart"></canvas>
+            </section>
+        </article>
+
+        <article class="serie-card">
+            <h3><i class="fa-solid fa-ban"></i> Cancelaciones por dia</h3>
+            <section class="grafico-linea">
+                <canvas id="cancelacionesChart"></canvas>
+            </section>
+        </article>
+
+        <article class="serie-card serie-card-destacada">
+            <h3><i class="fa-solid fa-chart-area"></i> Ingresos acumulados por dia</h3>
+            <section class="grafico-linea">
+                <canvas id="ingresosAcumuladosChart"></canvas>
+            </section>
+        </article>
+    </section>
+</main>
+
+<script th:inline="javascript">
+    const ventasPorDia = /*[[${ventasPorDia}]]*/ {labels: [], valores: []};
+    const pedidosCreadosPorDia = /*[[${pedidosCreadosPorDia}]]*/ {labels: [], valores: []};
+    const pedidosEntregadosPorDia = /*[[${pedidosEntregadosPorDia}]]*/ {labels: [], valores: []};
+    const cancelacionesPorDia = /*[[${cancelacionesPorDia}]]*/ {labels: [], valores: []};
+    const ingresosAcumuladosPorDia = /*[[${ingresosAcumuladosPorDia}]]*/ {labels: [], valores: []};
+
+    function crearGraficoLinea(idCanvas, titulo, serie, color, prefijo) {
+        const contexto = document.getElementById(idCanvas);
+
+        if (!contexto) {
+            return;
+        }
+
+        new Chart(contexto, {
+            type: 'line',
+            data: {
+                labels: serie.labels,
+                datasets: [{
+                    label: titulo,
+                    data: serie.valores,
+                    borderColor: color,
+                    backgroundColor: color + '26',
+                    pointBackgroundColor: color,
+                    pointBorderColor: '#ffffff',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.32
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const valor = context.parsed.y;
+                                return prefijo ? prefijo + valor.toFixed(2) : valor;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fecha'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: prefijo ? 'Monto' : 'Cantidad'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return prefijo ? prefijo + value : value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    crearGraficoLinea('ventasPorDiaChart', 'Ventas por dia', ventasPorDia, '#f97316', 'S/ ');
+    crearGraficoLinea('pedidosCreadosChart', 'Pedidos creados por dia', pedidosCreadosPorDia, '#2563eb', '');
+    crearGraficoLinea('pedidosEntregadosChart', 'Pedidos entregados por dia', pedidosEntregadosPorDia, '#16a34a', '');
+    crearGraficoLinea('cancelacionesChart', 'Cancelaciones por dia', cancelacionesPorDia, '#dc2626', '');
+    crearGraficoLinea('ingresosAcumuladosChart', 'Ingresos acumulados por dia', ingresosAcumuladosPorDia, '#7c3aed', 'S/ ');
+</script>
+</body>
+</html>

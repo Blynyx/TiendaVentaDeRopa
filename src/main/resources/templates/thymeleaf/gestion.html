@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Administrativa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+</head>
+<body>
+<header>
+    <h1>Sistema de Ventas Online</h1>
+</header>
+
+<nav>
+    <a th:href="@{/gestion}">Administracion</a>
+    <a th:href="@{/productos}">Productos</a>
+    <a th:href="@{/categorias}">Categorias</a>
+    <a th:href="@{/usuarios}">Usuarios</a>
+    <a th:href="@{/pedidos}">Pedidos</a>
+    <a th:href="@{/metricas}">Metricas</a>
+    <a th:href="@{/logout}">Logout</a>
+</nav>
+
+<main>
+    <section class="panel-admin">
+        <h2>Panel de Administracion</h2>
+        <p>Administre los modulos principales del sistema de ventas online.</p>
+
+        <article class="card">
+            <i class="fa-solid fa-shirt"></i>
+            <h3>Gestion de Productos</h3>
+            <p>Registre, edite y elimine productos disponibles en la tienda virtual.</p>
+            <a th:href="@{/productos}">Ingresar</a>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-layer-group"></i>
+            <h3>Gestion de Categorias</h3>
+            <p>Organice las categorias de los productos de la tienda.</p>
+            <a th:href="@{/categorias}">Ingresar</a>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-users"></i>
+            <h3>Gestion de Usuarios</h3>
+            <p>Administre los usuarios registrados en la plataforma.</p>
+            <a th:href="@{/usuarios}">Ingresar</a>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-box"></i>
+            <h3>Gestion de Pedidos</h3>
+            <p>Revise pedidos, delivery y estado de entrega.</p>
+            <a th:href="@{/pedidos}">Ingresar</a>
+        </article>
+
+        <article class="card">
+            <i class="fa-solid fa-chart-line"></i>
+            <h3>Metricas</h3>
+            <p>Consulte totales simples del sistema.</p>
+            <a th:href="@{/metricas}">Ingresar</a>
+        </article>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Sistema de Ventas Online</p>
+</footer>
+</body>
+</html>

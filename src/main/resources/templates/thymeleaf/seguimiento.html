@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento de Pedido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/seguimiento.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-truck-fast"></i> Seguimiento de Pedido</h1>
+    <nav>
+        <a th:href="@{/mis-compras}">Mis compras</a>
+        <a th:href="@{/pedido/detalle(id=${pedido.id})}">Detalle</a>
+        <a th:href="@{/catalogo}">Catalogo</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+    </nav>
+</header>
+
+<main>
+    <section class="tracking-resumen">
+        <div>
+            <span class="tracking-etiqueta">Pedido #<span th:text="${pedido.id}">1</span></span>
+            <h2>Tu pedido esta: <span th:text="${pedido.estado}">Estado</span></h2>
+            <div th:if="${pedido.cancelado}">
+                <p style="padding:12px 14px;border-radius:6px;background:#fee2e2;color:#991b1b;font-weight:700;">
+                    Estado: CANCELADO
+                </p>
+                <p style="font-size:13px;color:#6b7280;">Cancelado por <span th:text="${pedido.canceladoPor}"></span></p>
+                <p style="font-size:13px;color:#6b7280;">Fecha cancelacion: <span th:text="${pedido.fechaCanceladoTexto}"></span> <span th:text="${pedido.horaCanceladoTexto}"></span></p>
+                <p style="font-size:13px;color:#6b7280;">Motivo: <span th:text="${pedido.motivoCancelacion}"></span></p>
+            </div>
+            <p>Fecha de compra: <span th:text="${pedido.fechaCompraTexto}"></span> <span th:text="${pedido.horaCompraTexto}"></span></p>
+            <div th:if="${!pedido.cancelado}">
+                <p>Entrega: <span th:text="${pedido.tipoEnvio}"></span> | Delivery: S/ <span th:text="${#numbers.formatDecimal(pedido.costoDelivery, 1, 2)}">0.00</span></p>
+                <p>Promocion delivery: <span th:text="${pedido.promocionDelivery}"></span> | Descuento: <span th:text="${pedido.descuentoPorcentaje}"></span>% (-S/ <span th:text="${#numbers.formatDecimal(pedido.montoDescuento, 1, 2)}">0.00</span>)</p>
+                <p>Promocion descuento: <span th:text="${pedido.descripcionDescuentoAplicado}"></span></p>
+                <p>Metodo pago: <span th:text="${pedido.metodoPago}"></span> | Estado pago: <span th:text="${pedido.estadoPago}"></span></p>
+            </div>
+            <div th:if="${pedido.cancelado}">
+                <p>Descuento: <span th:text="${pedido.descuentoPorcentaje}"></span>% (-S/ <span th:text="${#numbers.formatDecimal(pedido.montoDescuento, 1, 2)}">0.00</span>)</p>
+                <p>Promocion descuento: <span th:text="${pedido.descripcionDescuentoAplicado}"></span></p>
+                <p>Metodo pago: <span th:text="${pedido.metodoPago}"></span> | Estado pago: <span th:text="${pedido.estadoPago}"></span></p>
+            </div>
+            <p>Total final: S/ <span th:text="${#numbers.formatDecimal(pedido.total, 1, 2)}">0.00</span></p>
+        </div>
+        <div class="tracking-estado">
+            <i class="fa-solid fa-box-open"></i>
+            <span th:style="${pedido.estadoBadgeStyle}" th:text="${pedido.estado}">Estado</span>
+        </div>
+    </section>
+
+    <section class="timeline">
+        <article th:class="${pedido.estado == 'Pendiente' ? 'paso actual' : 'paso completado'}">
+            <span class="punto"><i class="fa-solid fa-check"></i></span>
+            <div class="paso-card">
+                <span class="badge">Paso 1</span>
+                <h3>Pendiente</h3>
+                <p>Tu compra fue registrada correctamente y espera asignacion.</p>
+                <small><i class="fa-regular fa-clock"></i> <span th:text="${pedido.fechaCompraTexto}"></span> <span th:text="${pedido.horaCompraTexto}"></span></small>
+            </div>
+        </article>
+
+        <article th:class="${pedido.estado == 'Pendiente' ? 'paso pendiente' : pedido.estado == 'Asignado' ? 'paso actual' : 'paso completado'}">
+            <span class="punto"><i class="fa-solid fa-user-check"></i></span>
+            <div class="paso-card">
+                <span class="badge">Paso 2</span>
+                <h3>Asignado</h3>
+                <p>Un repartidor fue asignado a tu pedido.</p>
+                <small><i class="fa-regular fa-clock"></i> <span th:text="${pedido.fechaPreparacionTexto}"></span> <span th:text="${pedido.horaPreparacionTexto}"></span></small>
+            </div>
+        </article>
+
+        <article th:class="${pedido.estado == 'Entregado' ? 'paso completado' : pedido.estado == 'En camino' ? 'paso actual' : 'paso pendiente'}">
+            <span class="punto"><i class="fa-solid fa-truck-fast"></i></span>
+            <div class="paso-card">
+                <span class="badge">Paso 3</span>
+                <h3>En camino</h3>
+                <p>Tu pedido salio a reparto y se dirige a la direccion registrada.</p>
+                <small><i class="fa-regular fa-clock"></i> <span th:text="${pedido.fechaCaminoTexto}"></span> <span th:text="${pedido.horaCaminoTexto}"></span></small>
+            </div>
+        </article>
+
+        <article th:class="${pedido.estado == 'Entregado' ? 'paso completado' : 'paso pendiente'}">
+            <span class="punto"><i class="fa-solid fa-house-circle-check"></i></span>
+            <div class="paso-card">
+                <span class="badge">Paso 4</span>
+                <h3>Entregado</h3>
+                <p>El pedido fue entregado al cliente.</p>
+                <small><i class="fa-regular fa-clock"></i> <span th:text="${pedido.fechaEntregadoTexto}"></span> <span th:text="${pedido.horaEntregadoTexto}"></span></small>
+            </div>
+        </article>
+    </section>
+</main>
+</body>
+</html>

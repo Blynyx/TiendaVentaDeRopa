@@ -1,0 +1,179 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+    color: #333;
+}
+
+/* HEADER */
+.header{
+    background-color: #ea580c;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.header h1{
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+/* NAV */
+nav{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+nav a:hover{
+    background-color: #c2410c;
+}
+
+/* MAIN */
+main{
+    padding: 50px;
+}
+
+/* HERO */
+.hero{
+    background-color: #f97316;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 12px;
+    margin-bottom: 50px;
+}
+
+.hero h2{
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.hero p{
+    font-size: 18px;
+}
+
+/* CONTACTO INFO */
+.contacto-info{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+/* CARD */
+.card{
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+
+    border-top: 6px solid #f97316;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ICONOS */
+.icono{
+    font-size: 45px;
+    color: #f97316;
+    margin-bottom: 20px;
+}
+
+/* TITULOS */
+.card h3{
+    color: #c2410c;
+    margin-bottom: 15px;
+}
+
+/* FORMULARIO */
+.formulario-contacto{
+    background-color: white;
+
+    padding: 40px;
+
+    border-radius: 12px;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+.formulario-contacto h2{
+    color: #9a3412;
+    margin-bottom: 25px;
+}
+
+/* LABEL */
+label{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* INPUTS */
+input,
+textarea{
+    width: 100%;
+
+    padding: 14px;
+
+    margin-bottom: 20px;
+
+    border: 2px solid #fed7aa;
+    border-radius: 8px;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+input:focus,
+textarea:focus{
+    outline: none;
+    border-color: #f97316;
+}
+
+/* BOTÓN */
+button{
+    background-color: #f97316;
+    color: white;
+
+    border: none;
+
+    padding: 14px 24px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+button:hover{
+    background-color: #ea580c;
+}
+
+/* FOOTER */
+footer{
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}

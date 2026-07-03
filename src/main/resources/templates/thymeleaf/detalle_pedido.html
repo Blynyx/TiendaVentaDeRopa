@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Pedido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/carrito.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-receipt"></i> Pedido #<span th:text="${pedido.id}">1</span></h1>
+    <nav>
+        <th:block th:if="${admin == true}">
+            <a th:href="@{/pedidos}">Pedidos</a>
+            <a th:href="@{/usuarios}">Usuarios</a>
+            <a th:href="@{/gestion}">Administracion</a>
+        </th:block>
+        <th:block th:if="${delivery == true}">
+            <a th:href="@{/delivery/pedidos}">Mis pedidos</a>
+            <a th:href="@{/delivery/historial}">Historial</a>
+        </th:block>
+        <th:block th:if="${admin != true and delivery != true}">
+            <a th:href="@{/mis-compras}">Mis compras</a>
+            <a th:href="@{/catalogo}">Catalogo</a>
+            <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+        </th:block>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="tabla-contenedor">
+        <h2>Detalle del pedido</h2>
+        <div th:if="${pedido.cancelado}">
+            <p style="padding:12px 14px;border-radius:6px;background:#fee2e2;color:#991b1b;font-weight:700;">
+                Estado: CANCELADO
+            </p>
+            <p style="font-size:13px;color:#6b7280;">Cancelado por <span th:text="${pedido.canceladoPor}"></span></p>
+            <p style="font-size:13px;color:#6b7280;">Usuario: <span th:text="${pedido.canceladoPorNombre}"></span></p>
+            <p style="font-size:13px;color:#6b7280;">Fecha cancelacion: <span th:text="${pedido.fechaCanceladoTexto}"></span> <span th:text="${pedido.horaCanceladoTexto}"></span></p>
+            <p style="font-size:13px;color:#6b7280;">Motivo: <span th:text="${pedido.motivoCancelacion}"></span></p>
+        </div>
+        <p>Fecha: <span th:text="${pedido.fechaCompraTexto}"></span> <span th:text="${pedido.horaCompraTexto}"></span></p>
+        <p>Cliente: <span th:text="${pedido.usuario.nombre}"></span></p>
+        <p>Destinatario: <span th:text="${pedido.nombreDestinatario}"></span></p>
+        <p>Direccion: <span th:text="${pedido.direccion}"></span></p>
+        <p>Referencia: <span th:text="${pedido.referenciaDireccion}"></span></p>
+        <p>Celular: <span th:text="${pedido.celularCliente}"></span></p>
+        <p>DNI destinatario: <span th:text="${pedido.dniDestinatario}"></span></p>
+        <div th:if="${!pedido.cancelado}">
+            <p>Envio: <span th:text="${pedido.tipoEnvio}"></span></p>
+            <p>Costo delivery: S/ <span th:text="${#numbers.formatDecimal(pedido.costoDelivery, 1, 2)}">0.00</span></p>
+            <p>Promocion delivery: <span th:text="${pedido.promocionDelivery}"></span></p>
+            <p>Metodo de pago: <span th:text="${pedido.metodoPago}"></span></p>
+            <p>Estado pago: <span th:text="${pedido.estadoPago}"></span></p>
+            <p>Estado: <span th:style="${pedido.estadoBadgeStyle}" th:text="${pedido.estado}">Estado</span></p>
+        </div>
+        <div th:if="${pedido.cancelado}">
+            <p>Metodo pago: <span th:text="${pedido.metodoPago}"></span></p>
+            <p>Estado pago: <span th:text="${pedido.estadoPago}"></span></p>
+            <p th:if="${pedido.repartidor != null}">Repartidor historico: <span th:text="${pedido.repartidor.nombreCompleto}"></span></p>
+        </div>
+        <p th:if="${pedido.noEditable and !pedido.cancelado}" style="padding:10px 12px;border-radius:6px;background:#fff7ed;color:#9a3412;font-weight:600;"
+           th:text="${pedido.estado == 'Asignado' ? 'El pedido ya fue asignado y no puede modificarse.' : 'No se pueden editar pedidos en proceso de entrega.'}">
+        </p>
+        <p th:if="${!pedido.cancelado}">
+            Repartidor:
+            <span th:text="${pedido.repartidor != null ? pedido.repartidor.nombreCompleto : 'Sin asignar'}"></span>
+        </p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${pedido.items}">
+                <td th:text="${item.producto.nombre}">Producto</td>
+                <td>S/ <span th:text="${#numbers.formatDecimal(item.precioUnitario, 1, 2)}">0.00</span></td>
+                <td th:text="${item.cantidad}">1</td>
+                <td>S/ <span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}">0.00</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="resumen">
+        <p>Subtotal productos: S/ <span th:text="${#numbers.formatDecimal(pedido.subtotalProductos, 1, 2)}">0.00</span></p>
+        <p>Descuento <span th:text="${pedido.descuentoPorcentaje}">0</span>%: -S/ <span th:text="${#numbers.formatDecimal(pedido.montoDescuento, 1, 2)}">0.00</span></p>
+        <p>Promocion descuento: <span th:text="${pedido.descripcionDescuentoAplicado}"></span></p>
+        <p>Monto ahorrado: S/ <span th:text="${#numbers.formatDecimal(pedido.montoDescuento, 1, 2)}">0.00</span></p>
+        <p>Subtotal con descuento: S/ <span th:text="${#numbers.formatDecimal(pedido.subtotalConDescuento, 1, 2)}">0.00</span></p>
+        <div th:if="${!pedido.cancelado}">
+            <p>Delivery <span th:text="${pedido.tipoEnvio}"></span>: S/ <span th:text="${#numbers.formatDecimal(pedido.costoDelivery, 1, 2)}">0.00</span></p>
+            <p>Promocion delivery: <span th:text="${pedido.promocionDelivery}"></span></p>
+        </div>
+        <h3>Total final: S/ <span th:text="${#numbers.formatDecimal(pedido.total, 1, 2)}">0.00</span></h3>
+        <a th:if="${admin != true and delivery != true and pedido.estado == 'Pendiente'}" th:href="@{/pedido/editar-datos(id=${pedido.id})}" class="btn-comprar">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Editar datos de entrega
+        </a>
+        <div th:if="${admin == true and pedido.estado != 'Entregado' and pedido.estado != 'Cancelado'}">
+            <a th:if="${pedido.repartidor == null}" th:href="@{/pedido/asignar(pedidoId=${pedido.id})}" class="btn-comprar">
+                <i class="fa-solid fa-truck-fast"></i>
+                Asignar repartidor
+            </a>
+            <form th:if="${pedido.desasignable}" th:action="@{/pedido/desasignar}" method="post" style="margin-top:10px;">
+                <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                <button type="submit" class="btn-comprar">
+                    <i class="fa-solid fa-ban"></i>
+                    Quitar asignacion
+                </button>
+            </form>
+            <form th:action="@{/pedido/cancelar/admin}" method="post" class="form-cancelacion" style="margin-top:10px;">
+                <input type="hidden" name="id" th:value="${pedido.id}">
+                <select name="motivo" class="motivo-select" required onchange="actualizarDetalleMotivo(this.form)">
+                    <option value="">Seleccione un motivo</option>
+                    <option th:each="motivo : ${motivosCancelacionAdmin}" th:value="${motivo}" th:text="${motivo}"></option>
+                </select>
+                <input type="text" name="detalleMotivo" class="detalle-motivo" placeholder="Detalle adicional" style="display:none;">
+                <button type="submit" class="btn-comprar">
+                    <i class="fa-solid fa-ban"></i>
+                    Cancelar pedido
+                </button>
+            </form>
+        </div>
+        <a th:href="@{/pedido/seguimiento(id=${pedido.id})}" class="btn-comprar">
+            <i class="fa-solid fa-location-dot"></i>
+            Ver seguimiento
+        </a>
+    </section>
+</main>
+<script>
+    function actualizarDetalleMotivo(form) {
+        var select = form.querySelector(".motivo-select");
+        var detalle = form.querySelector(".detalle-motivo");
+
+        if (!select || !detalle) {
+            return;
+        }
+
+        var requiereDetalle = select.value === "Otro";
+        detalle.style.display = requiereDetalle ? "inline-block" : "none";
+        detalle.required = requiereDetalle;
+
+        if (!requiereDetalle) {
+            detalle.value = "";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+    color: #333;
+}
+
+/* HEADER */
+.header{
+    background-color: #ea580c;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.header h1{
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+/* NAV */
+nav{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+nav a:hover{
+    background-color: #c2410c;
+}
+
+/* MAIN */
+main{
+    padding: 50px;
+}
+
+/* TITULO */
+.titulo{
+    margin-bottom: 30px;
+}
+
+.titulo h2{
+    color: #9a3412;
+    margin-bottom: 10px;
+}
+
+.titulo p{
+    color: #666;
+}
+
+/* ACCIONES */
+.acciones{
+    margin-bottom: 25px;
+}
+
+.filtros{
+    background-color: white;
+    border-left: 6px solid #f97316;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+.filtros form{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filtros label{
+    color: #9a3412;
+    font-weight: 600;
+}
+
+.filtros select{
+    min-width: 190px;
+    padding: 11px 14px;
+    border: 1px solid #fed7aa;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.filtros button{
+    background-color: #f97316;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.filtros button:hover{
+    background-color: #ea580c;
+}
+
+/* BOTON AGREGAR */
+.btn-agregar{
+    display: inline-block;
+
+    background-color: #f97316;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 22px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.btn-agregar:hover{
+    background-color: #ea580c;
+}
+
+/* TABLA */
+.tabla-contenedor{
+    overflow-x: auto;
+}
+
+table{
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background-color: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+/* CABECERA TABLA */
+thead{
+    background-color: #f97316;
+    color: white;
+}
+
+/* CELDAS */
+th,
+td{
+    padding: 18px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* FILAS */
+tbody tr:hover{
+    background-color: #fff1e6;
+}
+
+/* ACCIONES TABLA */
+.acciones-tabla{
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* BOTON EDITAR */
+.btn-editar{
+    background-color: #2563eb;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 12px;
+
+    border-radius: 6px;
+
+    transition: 0.3s;
+}
+
+.btn-editar:hover{
+    background-color: #1d4ed8;
+}
+
+/* BOTON ELIMINAR */
+.btn-eliminar{
+    background-color: #dc2626;
+    color: white;
+
+    border: none;
+
+    padding: 10px 12px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.btn-eliminar:hover{
+    background-color: #b91c1c;
+}
+
+/* FOOTER */
+footer{
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}

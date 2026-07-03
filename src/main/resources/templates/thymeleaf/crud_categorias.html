@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Categorias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/crud_categorias.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-layer-group"></i> Gestion de Categorias</h1>
+    <nav>
+        <a th:href="@{/principal}"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a th:href="@{/gestion}"><i class="fa-solid fa-gear"></i> Administracion</a>
+        <a th:href="@{/productos}"><i class="fa-solid fa-shirt"></i> Productos</a>
+        <a th:href="@{/usuarios}"><i class="fa-solid fa-users"></i> Usuarios</a>
+    </nav>
+</header>
+
+<main>
+    <section class="titulo">
+        <h2>Administracion de Categorias</h2>
+        <p>Gestione las categorias de los productos.</p>
+        <p th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:text="${mensaje}"></p>
+    </section>
+
+    <section class="acciones">
+        <a th:href="@{/categorias/nueva}" class="btn-agregar">
+            <i class="fa-solid fa-plus"></i>
+            Nueva Categoria
+        </a>
+    </section>
+
+    <section class="tabla-contenedor">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="categoria : ${categorias}">
+                <td th:text="${categoria.id}">1</td>
+                <td th:text="${categoria.nombre}">Nombre</td>
+                <td th:text="${categoria.descripcion}">Descripcion</td>
+                <td>
+                    <span th:if="${categoria.activa}" class="badge-estado activo">Activa</span>
+                    <span th:unless="${categoria.activa}" class="badge-estado inactivo">Oculta</span>
+                </td>
+                <td class="acciones-tabla">
+                    <a th:href="@{/categorias/editar(id=${categoria.id})}" class="btn-editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                    <form th:if="${categoria.activa}" th:action="@{/categorias/eliminar}" method="post" style="display:inline-block;">
+                        <input type="hidden" name="id" th:value="${categoria.id}">
+                        <button type="submit" class="btn-eliminar" title="Ocultar categoria">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </form>
+                    <form th:unless="${categoria.activa}" th:action="@{/categorias/reactivar}" method="post" style="display:inline-block;">
+                        <input type="hidden" name="id" th:value="${categoria.id}">
+                        <button type="submit" class="btn-reactivar" title="Reactivar categoria">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Urban Style - Proyecto Academico</p>
+</footer>
+</body>
+</html>

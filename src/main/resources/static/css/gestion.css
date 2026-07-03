@@ -1,0 +1,116 @@
+v/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff7f2;
+}
+
+/* HEADER */
+header{
+    background-color: #ea580c;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+header h1{
+    font-size: 32px;
+    font-weight: 600;
+}
+
+/* NAV */
+nav{
+    background-color: #c2410c;
+    padding: 18px;
+    text-align: center;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    margin: 0 18px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover{
+    color: #fed7aa;
+}
+
+/* MAIN */
+main{
+    padding: 40px;
+}
+
+/* PANEL */
+.panel-admin h2{
+    font-size: 32px;
+    color: #9a3412;
+    margin-bottom: 10px;
+}
+
+.panel-admin > p{
+    color: #7c2d12;
+    margin-bottom: 35px;
+}
+
+/* CARD */
+.card{
+    background-color: white;
+    border-left: 8px solid #f97316;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ICONOS */
+.card i{
+    font-size: 42px;
+    color: #f97316;
+    margin-bottom: 20px;
+}
+
+/* TITULOS */
+.card h3{
+    color: #c2410c;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+/* TEXTO */
+.card p{
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+/* BOTONES */
+.card a{
+    display: inline-block;
+    background-color: #f97316;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.card a:hover{
+    background-color: #ea580c;
+}
+
+/* FOOTER */
+footer{
+    background-color: #c2410c;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    margin-top: 40px;
+}

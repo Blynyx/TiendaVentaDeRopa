@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar datos del pedido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/agregar_usuario.css}">
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-pen-to-square"></i> Editar Pedido #<span th:text="${pedido.id}">1</span></h1>
+    <nav>
+        <a th:href="@{/mis-compras}">Mis compras</a>
+        <a th:href="@{/pedido/detalle(id=${pedido.id})}">Detalle</a>
+        <a th:href="@{/catalogo}">Catalogo</a>
+        <a th:href="@{/contacto}"><i class="fa-solid fa-envelope"></i> Contacto</a>
+    </nav>
+</header>
+
+<main>
+    <section class="formulario-container">
+        <h2>Datos de entrega</h2>
+        <form th:action="@{/pedido/actualizar-datos}" method="get">
+            <input type="hidden" name="id" th:value="${pedido.id}">
+
+            <label for="direccion">Direccion de entrega</label>
+            <input type="text" id="direccion" name="direccion" th:value="${pedido.direccion}" required>
+
+            <label for="nombreDestinatario">Nombre del destinatario</label>
+            <input type="text" id="nombreDestinatario" name="nombreDestinatario" th:value="${pedido.nombreDestinatario}" required>
+
+            <label for="celularCliente">Telefono de contacto</label>
+            <input type="text" id="celularCliente" name="celularCliente" th:value="${pedido.celularCliente}" pattern="[0-9]{9}" minlength="9" maxlength="9" inputmode="numeric" required>
+
+            <section class="botones">
+                <button type="submit" class="btn-guardar">Guardar cambios</button>
+                <a th:href="@{/pedido/detalle(id=${pedido.id})}" class="btn-cancelar">Volver</a>
+            </section>
+        </form>
+    </section>
+</main>
+</body>
+</html>
