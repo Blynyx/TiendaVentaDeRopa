@@ -81,3 +81,4 @@ Y recorren listas con JSTL:
     ${producto.nombre}
 </c:forEach>
 ```
+.
